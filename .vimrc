@@ -20,6 +20,9 @@ Plugin 'scrooloose/syntastic'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'bling/vim-bufferline'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'metakirby5/codi.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -172,6 +175,8 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+let g:syntastic_python_checkers = ['pylint']
 " end scrooloose/syntastic
 """"""""""""""""""""""""""""""""
 
@@ -188,6 +193,13 @@ map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 " Automatically displays all buffers when there's only one tab open.
 let g:airline#extensions#tabline#enabled = 1
 " end vim-airline/vim-airline
+""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""
+" scrooloose/nerdcommenter
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" end scrooloose/nerdcommenter
 """"""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""
