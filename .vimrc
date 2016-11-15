@@ -22,7 +22,12 @@ Plugin 'bling/vim-bufferline'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'davidhalter/jedi-vim'
-Plugin 'metakirby5/codi.vim'
+"Plugin 'metakirby5/codi.vim'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'ludovicchabant/vim-gutentags'
+"Plugin 'xolox/vim-misc'
+"Plugin 'xolox/vim-notes'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -57,7 +62,7 @@ onoremap jk <Esc>
 onoremap kj <Esc>
 
 " Better command-line completion
-set wildmenu
+" set wildmenu
 
 " Show partial commands in the last line of the screen
 set showcmd
@@ -138,6 +143,11 @@ au BufNewFile,BufRead *.py
     \ set fileformat=unix
 " end Python specific
 """"""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""
+" Markdown
+au! BufRead,BufNewFile *.markdown set filetype=mkd
+au! BufRead,BufNewFile *.md       set filetype=mkd
+""""""""""""""""""""""""""""""""
 
 "------------------------------------------------------------
 " Mappings {{{1
@@ -164,6 +174,8 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+
+let g:ctrlp_working_path_mode = 'ra'
 
 """"""""""""""""""""""""""""""""
 " scrooloose/syntastic
@@ -197,11 +209,10 @@ let g:airline#extensions#tabline#enabled = 1
 
 """"""""""""""""""""""""""""""""
 " scrooloose/nerdcommenter
-" Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
 " end scrooloose/nerdcommenter
 """"""""""""""""""""""""""""""""
-
+let g:gutentags_cache_dir = '~/.vim/gutentags'
 """"""""""""""""""""""""""""""""
 " Buffer stuff
 ":nnoremap <Tab> :bnext<CR>
