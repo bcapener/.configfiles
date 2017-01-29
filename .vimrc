@@ -14,18 +14,19 @@ Plugin 'VundleVim/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'valloric/youcompleteme'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'scrooloose/syntastic'
+"Plugin 'scrooloose/syntastic'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'bling/vim-bufferline'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'davidhalter/jedi-vim'
+"Plugin 'davidhalter/jedi-vim'
 "Plugin 'metakirby5/codi.vim'
 Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+"Plugin 'plasticboy/vim-markdown'
 Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'majutsushi/tagbar'
 "Plugin 'xolox/vim-misc'
 "Plugin 'xolox/vim-notes'
 
@@ -60,6 +61,8 @@ inoremap kj <Esc>
 " vnoremap kj <Esc>
 onoremap jk <Esc>
 onoremap kj <Esc>
+
+set nowrap
 
 " Better command-line completion
 " set wildmenu
@@ -133,14 +136,17 @@ set pastetoggle=<F2>
  
 """"""""""""""""""""""""""""""""
 " Python specific
-au BufNewFile,BufRead *.py
-    \ set tabstop=4 |		" Number of spaces that a <Tab> in the file counts for.
-    \ set softtabstop=4 |
-    \ set shiftwidth=4 |
-    \ set textwidth=300 |
-    \ set expandtab |
-    \ set autoindent |
-    \ set fileformat=unix
+autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=4 textwidth=300 autoindent fileformat=unix
+"au BufNewFile,BufRead *.py
+    "\ set tabstop=4 |		" Number of spaces that a <Tab> in the file counts for.
+    "\ set softtabstop=4 |
+    "\ set shiftwidth=4 |
+    "\ set textwidth=300 |
+    "\ set expandtab |
+    "\ set autoindent |
+    "\ set fileformat=unix
+" Press <F9> to run current python buffer.
+autocmd FileType python nnoremap <buffer> <F9> :exec '!python' shellescape(@%, 1)<cr>
 " end Python specific
 """"""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""
@@ -175,8 +181,21 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" Center Searches
+:nnoremap n nzz
+:nnoremap N Nzz
+:nnoremap * *zz
+:nnoremap # #zz
+:nnoremap g* g*zz
+:nnoremap g# g#zz
+
 let g:ctrlp_working_path_mode = 'ra'
 
+""""""""""""""""""""""""""""""""
+" majutsushi/tagbar
+nmap <F8> :TagbarToggle<CR>
+" end majutsushi/tagbar
+""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""
 " scrooloose/syntastic
 set statusline+=%#warningmsg#
@@ -194,11 +213,33 @@ let g:syntastic_python_checkers = ['pylint']
 
 """"""""""""""""""""""""""""""""
 " Valloric/YouCompleteMe
-let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+"let g:ycm_autoclose_preview_window_after_completion=1
+"let g:ycm_collect_identifiers_from_tags_files = 1
+"let g:ycm_min_num_of_chars_for_completion = 0
+"map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 "let g:ycm_python_binary_path = 'python'
 " end Valloric/YouCompleteMe
 """"""""""""""""""""""""""""""""
+" ---------------------------------- "
+"  " Configure YouCompleteMe
+" ---------------------------------- "
+
+let g:ycm_python_binary_path = 'python'
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
+"let g:ycm_use_ultisnips_completer = 1 " Default 1, just ensure
+let g:ycm_seed_identifiers_with_syntax = 1 " Completion for programming language's keyword
+let g:ycm_complete_in_comments = 1 " Completion in comments
+"let g:ycm_complete_in_strings = 1 " Completion in string
+let g:ycm_min_num_of_chars_for_completion = 1
+
+"let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
+"let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
+
+"map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+" Goto definition with F3
+"map <F3> :YcmCompleter GoTo<CR>
 
 """"""""""""""""""""""""""""""""
 " vim-airline/vim-airline
