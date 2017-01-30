@@ -14,9 +14,12 @@ Plugin 'VundleVim/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'ervandew/supertab'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'ctrlpvim/ctrlp.vim'
 "Plugin 'scrooloose/syntastic'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'bling/vim-bufferline'
 Plugin 'altercation/vim-colors-solarized'
@@ -43,8 +46,15 @@ filetype plugin indent on    " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
-"
 
+" ---------------------------------- "
+"  " Configure tmhedberg/SimpylFold
+" ---------------------------------- "
+"enable previewing of your folded classes' and functions' docstrings in the fold text
+let g:SimpylFold_docstring_preview = 0
+"let g:SimpylFold_docstring_level = 0
+
+set foldlevelstart=1
 " To enable 256 colors in vim, put this your .vimrc before setting the
 " colorscheme. see: http://vim.wikia.com/wiki/256_colors_in_vim
 set t_Co=256
@@ -190,6 +200,11 @@ nnoremap <C-H> <C-W><C-H>
 :nnoremap g# g#zz
 
 let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll|pyc|swp)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
 
 """"""""""""""""""""""""""""""""
 " majutsushi/tagbar
@@ -227,7 +242,7 @@ let g:syntastic_python_checkers = ['pylint']
 let g:ycm_python_binary_path = 'python'
 let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
-"let g:ycm_use_ultisnips_completer = 1 " Default 1, just ensure
+let g:ycm_use_ultisnips_completer = 1 " Default 1, just ensure
 let g:ycm_seed_identifiers_with_syntax = 1 " Completion for programming language's keyword
 let g:ycm_complete_in_comments = 1 " Completion in comments
 "let g:ycm_complete_in_strings = 1 " Completion in string
@@ -241,6 +256,15 @@ let g:ycm_min_num_of_chars_for_completion = 1
 " Goto definition with F3
 "map <F3> :YcmCompleter GoTo<CR>
 
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+ 
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger="<cr>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 """"""""""""""""""""""""""""""""
 " vim-airline/vim-airline
 " Automatically displays all buffers when there's only one tab open.
