@@ -6,7 +6,8 @@ if [ -f /etc/bashrc ]; then
 fi
 
 # workspace=$HOME/workspace
-workspace=$HOME/PycharmProjects/UFS_Validation
+# workspace=$HOME/PycharmProjects/UFS_Validation
+workspace=$HOME/projects/validation
 # mist=$workspace/MIST/
 # orionfw=$mist/lib/UFS/Orion/
 pyPath="/usr/lib64/python2.7/site-packages/:/usr/lib64/python2.7/site-packages/gtk-2.0/"
@@ -94,57 +95,34 @@ updatedmx() { uninstalldmx; sleep 1s; installdmx $1;}
 # SIG_UFSDRV
 alias verdrv='rpm -q sig_ufsdrv'
 alias trace="python /usr/bin/ufs_trace_tool.py -c"
-traceout() { trace > ~/boiseufs/User_Folders/Individual_Folders/bcapener/traces_outputs/$1.trace; }
+alias ftrace='python ~/boiseufs/users/bcapener/scripts/trace_filter.py'
+traceout() { trace > ~/boiseufs/users/bcapener/traces_outputs/$1.trace; }
 alias link='trace | grep link'
 alias restartd="sudo systemctl restart sig_ufsdrv"
-alias ufsrestart="killpy; echo; echo '[Restarting sig_ufsdrv]'; restartd; sleep 1s; trace; echo; echo '[Current Reference Clock]'; refclk; echo"
-alias restart="restartd; sleep 1s; trace; refclk"
-alias ufsstatus='sudo systemctl status sig_ufsdrv'
-alias ufsstop='sudo systemctl stop sig_ufsdrv; ufsstatus'
-alias ufsstart='sudo systemctl start sig_ufsdrv; trace; ufsstatus'
-alias ufson='ufsstart'
-alias ufsoff='ufsstop'
-alias uninstalldrv='sudo yum remove sig_ufsdrv'
+alias res="killpy; echo; echo '[Restarting sig_ufsdrv]'; restartd; sleep 1s; ftrace; echo; echo '[Current Reference Clock]'; refclk; echo"
+alias restart2="restartd; sleep 1s; trace; refclk"
+alias status='sudo systemctl status sig_ufsdrv'
+alias stop='sudo systemctl stop sig_ufsdrv; ufsstatus'
+alias start='sudo systemctl start sig_ufsdrv; ftrace; ufsstatus'
+alias update='/usr/bin/python ~/boiseufs/fw_drivers/hercules_update.py'
+#alias uninstalldrv='sudo yum remove sig_ufsdrv'
 
-updatedrv() { 
-	if [$1 == '']; then
-		sudo yum install sig_ufsdrv; 
-	else
-		sudo yum install sig_ufsdrv-$1; 
-	fi
-}
-
-installdrv() { 
-	if [$1 == '']; then
-		sudo yum install sig_ufsdrv; 
-	else
-		sudo yum install sig_ufsdrv-$1; 
-	fi
-}
-downgradedrv() { sudo yum downgrade sig_ufsdrv-$1; }
-
-base() {
-
-	num="${1^^}"
-	if [[ $1 == 0x* || $1 == 0X* ]]; then
-		#printf 'DEC: %d\n' $1
-		dec=$(bc <<< "obase=10;ibase=16;${num#"0X"}")
-		#echo $dec
-	elif [[ $1 == 0b* || $1 == 0B* ]]; then
-		dec=$(bc <<< "obase=10;ibase=2;${num#"0B"}")
-		#echo 'obase=2;$1' | bc
-	elif [[ $1 == 0o* || $1 == 0O* ]]; then
-		dec=$(bc <<< "obase=10;ibase=8;${num#"0O"}")
-	else
-		#printf 'HEX: 0x%x\n' $1
-		dec=$1
-	fi
-	printf 'DEC: %d\n' $dec
-	printf 'HEX: 0x%x\n' $dec
-	#printf 'BIN: 0b%s\n' 'obase=2;$dec' | bc #$dec
-	printf 'OCT: 0o%o\n' $dec
-}
-
+#updatedrv() { 
+	#if [$1 == '']; then
+		#sudo yum install sig_ufsdrv; 
+	#else
+		#sudo yum install sig_ufsdrv-$1; 
+	#fi
+#}
+#
+#installdrv() { 
+	#if [$1 == '']; then
+		#sudo yum install sig_ufsdrv; 
+	#else
+		#sudo yum install sig_ufsdrv-$1; 
+	#fi
+#}
+#downgradedrv() { sudo yum downgrade sig_ufsdrv-$1; }
 
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
@@ -156,13 +134,15 @@ alias ..4='cd ../../../..'
 alias ..5='cd ../../../../..'
 alias ..6='cd ../../../../../..'
 alias vimrc='vim ~/.vimrc'
-alias bashrc='vim ~/.bashrc'
+alias bashrc='vim ~/.bashrc;source ~/.bashrc'
 
 alias template='/usr/bin/python $workspace/MIST/templates/t_template_UFS.py startupReconfig=False |less -S'
 alias ctemplate='/usr/bin/python $workspace/MIST/templates/t_template_UFS.py startupReconfig=True'
+alias udr='/usr/bin/python $workspace/MIST/scripts/UfsDeviceReport.py'
 
 fw_search_str="l_HostVersionInfo \|FirmwareUpdater \|Test Result: \|l_VuCmd \|l_VuLookUpTable \|l_VuCmdTranslate \|Current configuration descriptor matches \|Writing configuration descriptor"
-alias mpflow='/usr/bin/python $workspace/MIST/scripts/FirmwareUpdater.py mpflow=True config=True choose=True | tee ~/tlastrun.log | grep "$fw_search_str";'
+# alias mpflow='/usr/bin/python $workspace/MIST/scripts/FirmwareUpdater.py mpflow=True config=True choose=True | tee ~/tlastrun.log | grep "$fw_search_str";'
+alias fw='/usr/bin/python $workspace/MIST/scripts/FirmwareUpdater.py' 
 # mpflow() {
 	# search_str="l_HostVersionInfo \|FirmwareUpdater \|Test Result: \|l_VuCmd \|l_VuLookUpTable \|l_VuCmdTranslate \|Current configuration descriptor matches \|Writing configuration descriptor"
 	# if [$1 == '']; then
