@@ -1,0 +1,105 @@
+#!/bin/bash
+bind TAB:menu-complete
+
+# alias fufs='python /home/ufs/workspace/fufs.py'
+alias power_off='python /home/ufs/workspace/fufs.py -c off; stop; status'
+# alias trace='python /usr/bin/ufs_trace_tool.py -c | tail -n'
+# alias tracea='python /usr/bin/ufs_trace_tool.py -c'
+# alias tracep='python /usr/bin/ufs_trace_tool.py -s DM_TRACE_RESPONSE_TAGS'
+# alias lastc='python /usr/bin/ufs_trace_tool.py -c | tac | grep "command done" -m1 -A30 | tac'
+
+alias ll='ls -l'
+
+# Reference Clock
+alias rclk19='sudo /opt/sig_ufsdrv/bin/bar_reader.py -d 1344:11f0 -e -l -o 0x3c0006c -v 0'
+alias rclk26='sudo /opt/sig_ufsdrv/bin/bar_reader.py -d 1344:11f0 -e -l -o 0x3c0006c -v 1'
+alias read_rclk='sudo /opt/sig_ufsdrv/bin/bar_reader.py -d 1344:11f0 -e -l -o 0x3c0006c'
+alias rclk_off='sudo /opt/sig_ufsdrv/bin/bar_reader.py -d 1344:11f0 -e -l -o 0x03c00058 -v 1'
+alias rclk_on='sudo /opt/sig_ufsdrv/bin/bar_reader.py -d 1344:11f0 -e -l -o 0x03c00058 -v 0'
+
+# Navigating folders
+workspace=$HOME/workspace
+alias akillorin='cd /home/ufs/boiseufs/User_Folders/Individual_Folders/akillorin'
+alias testlists='cd /home/ufs/boiseufs/User_Folders/Group_Folders/Testlist_Results'
+
+# Power functions
+alias rails_off='sudo /opt/sig_ufsdrv/bin/ufs_dps.py -p off'
+alias rails_on='sudo /opt/sig_ufsdrv/bin/ufs_dps.py -p on_nominal'
+alias measure='sudo /opt/sig_ufsdrv/bin/ufs_dps.py -a'
+alias calibrate='sudo /opt/sig_ufsdrv/bin/ufs_dps.py -a;
+echo "Powering off all three supplies";
+sudo /opt/sig_ufsdrv/bin/ufs_dps.py -p off;
+read -n1 -r -p "Remove the part. Dont put the lid back down! Press ENTER to continue";
+echo "Powering on supplies to nominal voltages";
+sudo /opt/sig_ufsdrv/bin/ufs_dps.py -p on_nominal;
+echo "Running offset calibration";
+sudo /opt/sig_ufsdrv/bin/ufs_dps.py -c;
+echo "Powering off all three supplies";
+sudo /opt/sig_ufsdrv/bin/ufs_dps.py -p off;
+read -n1 -r -p "Replace the part. Press ENTER when done";
+sudo /opt/sig_ufsdrv/bin/ufs_dps.py -p on_nominal;
+python /usr/bin/ufs_trace_tool.py -t DM_IOCTL_LINK_RESTART_COLD;
+sudo /opt/sig_ufsdrv/bin/ufs_dps.py -a;
+echo "Calibration complete!"'
+
+# Basic Driver Commands
+alias trace='python /usr/bin/ufs_trace_tool.py -c'
+alias traceshort='trace | grep -e "IU done" -e "connection"'
+alias stop='sudo systemctl stop sig_ufsdrv'
+alias start='sudo systemctl start sig_ufsdrv; traceshort'
+alias restart='sudo systemctl restart sig_ufsdrv; traceshort'
+alias status='sudo systemctl status sig_ufsdrv'
+alias power_off='python /home/ufs/workspace/fufs.py -c off; stop; status'
+alias setupproxy='http_proxy=proxy:8080;export http_proxy'
+alias updatedmx='sudo rpm -e dmx;sudo rpm -i /home/ufs/boiseufs/dmx/Linux/4.0.161104.1/CentOS-x64/dmx-4.0.161104.1-1.x86_64.rpm;rpm -q dmx;'
+# Uart and Protocol Modes
+alias uart='sudo insmod /opt/sigsw/el7/modules/sig_axiuart.ko; sudo chmod 666 /dev/ttyAUL0; echo "axi uart kikked out"; /opt/sig_ufsdrv/bin/bar_reader.py -d 1344:11f0 -e -l -o 0x03c00078 -v 0x010; echo "OPT 2 set to low"'
+alias usig='/opt/sig_ufsdrv/bin/bar_reader.py -d 1344:11f0 -e -l -o 0x03c00078 -v 0x0110; restart; status;' 
+
+# Scripts
+alias configure_python_path='PYTHONPATH=":/usr/lib64/python2.7/site-packages/:/usr/lib64/python2.7/site-packages/gtk-2.0/:/home/ufs/workspace/MIST/:/home/ufs/workspace/"; export PYTHONPATH'
+alias mpflow='python $workspace/MIST/scripts/FirmwareUpdater.py mpflow=True config=True choose=True'
+alias currentfw='python $workspace/MIST/scripts/FirmwareUpdater.py mpflow=True config=True choose=False'
+alias template='python /home/ufs/workspace/MIST/templates/t_template_UFS.py'
+alias readFID='python /home/ufs/workspace/MIST/templates/readFID.py'
+alias debug='python /home/ufs/workspace/MIST/scripts/t_DEBUG.py serial'
+alias report='python /home/ufs/workspace/MIST/scripts/UfsDeviceReport.py'
+alias loop='python /home/ufs/workspace/MIST/scripts/writeReadCompareLoop.py'
+alias fid='start;readFID;stop'
+
+# Test Colors
+# - Regular - #
+txtblk='\[\e[0;30m\]' # Black
+txtred='\[\e[0;31m\]' # Red
+txtgrn='\[\e[0;32m\]' # Green
+txtylw='\[\e[0;33m\]' # Yellow
+txtblu='\[\e[0;34m\]' # Blue
+txtpur='\[\e[0;35m\]' # Purple
+txtcyn='\[\e[0;36m\]' # Cyan
+txtwht='\[\e[0;37m\]' # White
+# - Bold - #
+bldblk='\[\e[1;30m\]' # Black
+bldred='\[\e[1;31m\]' # Red
+bldgrn='\[\e[1;32m\]' # Green
+bldylw='\[\e[1;33m\]' # Yellow
+bldblu='\[\e[1;34m\]' # Blue
+bldpur='\[\e[1;35m\]' # Purple
+bldcyn='\[\e[1;36m\]' # Cyan
+bldwht='\[\e[1;37m\]' # White
+# - End Coloring - #
+END="\[\e[0m\]"
+
+# \A : the current time in 24-hour HH:MM format
+# \W : the basename of the current working directory
+# \u : the username of the current user
+# \n : newline
+# \h : hostname
+#  (\$(git branch 2>/dev/null | grep '^*' | colrm 1 2)) some git stuff
+# Set Terminal Color Patterns
+PS1="$txtylw\u$END@$txtblu\h$END $txtylw\W$END $bldred\$$END "
+
+# LS_COLORS=$LS_COLORS: 'directory=txtred' ; export LS_COLORS
+
+# Environment Setup
+cp ~/boiseufs/User_Folders/Individual_Folders/akillorin/.bashrc_andy ~/.bashrc_andy
+configure_python_path 
