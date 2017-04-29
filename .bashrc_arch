@@ -22,4 +22,5 @@ alias pacupp='echo packer -Syyu; packer -Syyu'
 
 alias bashrc='vim ~/.bashrc;. ~/.bashrc;echo ~/.bashrc re-loaded;'
 alias vimrc='vim ~/.vimrc'
-
+eval $(thefuck --alias)
+alias crap='fuck'

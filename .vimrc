@@ -22,7 +22,7 @@ Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'bling/vim-bufferline'
-Plugin 'altercation/vim-colors-solarized'
+"Plugin 'altercation/vim-colors-solarized'
 Plugin 'scrooloose/nerdcommenter'
 "Plugin 'davidhalter/jedi-vim'
 "Plugin 'metakirby5/codi.vim'
@@ -32,6 +32,7 @@ Plugin 'ludovicchabant/vim-gutentags'
 Plugin 'majutsushi/tagbar'
 "Plugin 'xolox/vim-misc'
 "Plugin 'xolox/vim-notes'
+Plugin 'rust-lang/rust.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -46,7 +47,7 @@ filetype plugin indent on    " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
-
+let g:clang_library_path='/usr/lib64/libclang.so.4.0'
 " ---------------------------------- "
 "  " Configure tmhedberg/SimpylFold
 " ---------------------------------- "
@@ -248,6 +249,12 @@ let g:ycm_complete_in_comments = 1 " Completion in comments
 "let g:ycm_complete_in_strings = 1 " Completion in string
 let g:ycm_min_num_of_chars_for_completion = 1
 
+let g:ycm_seed_identifiers_with_syntax=1
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf=0
+let g:ycm_collect_identifiers_from_tag_files = 1
+set completeopt=longest,menu
+
 "let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
 "let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
 
@@ -257,14 +264,14 @@ let g:ycm_min_num_of_chars_for_completion = 1
 "map <F3> :YcmCompleter GoTo<CR>
 
 " make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
+" let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+" let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+" let g:SuperTabDefaultCompletionType = '<C-n>'
  
 " better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger="<cr>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+" let g:UltiSnipsExpandTrigger="<cr>"
+" let g:UltiSnipsJumpForwardTrigger="<c-j>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 """"""""""""""""""""""""""""""""
 " vim-airline/vim-airline
 " Automatically displays all buffers when there's only one tab open.
