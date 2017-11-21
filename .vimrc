@@ -1,4 +1,4 @@
-
+" Plugins {{{
 set nocompatible              " be iMproved, required
 filetype off                  " required
 " git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
@@ -14,15 +14,21 @@ Plugin 'VundleVim/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'ervandew/supertab'
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'ervandew/supertab'
+if has('nvim')
+	Plugin 'Shougo/deoplete.nvim'
+	Plugin 'zchee/deoplete-jedi'
+	Plugin 'sebastianmarkow/deoplete-rust'
+else
+	Plugin 'Valloric/YouCompleteMe'
+endif
 Plugin 'ctrlpvim/ctrlp.vim'
 "Plugin 'scrooloose/syntastic'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
+"Plugin 'SirVer/ultisnips'
+"Plugin 'honza/vim-snippets'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'bling/vim-bufferline'
-"Plugin 'altercation/vim-colors-solarized'
+Plugin 'altercation/vim-colors-solarized'
 Plugin 'scrooloose/nerdcommenter'
 "Plugin 'davidhalter/jedi-vim'
 "Plugin 'metakirby5/codi.vim'
@@ -33,6 +39,8 @@ Plugin 'majutsushi/tagbar'
 "Plugin 'xolox/vim-misc'
 "Plugin 'xolox/vim-notes'
 Plugin 'rust-lang/rust.vim'
+" Plugin 'Rip-Rip/clang_complete'
+Plugin 'dracula/vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -47,31 +55,162 @@ filetype plugin indent on    " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
+" }}}
+
+" Plugin Settings {{{1
+
 let g:clang_library_path='/usr/lib64/libclang.so.4.0'
-" ---------------------------------- "
-"  " Configure tmhedberg/SimpylFold
-" ---------------------------------- "
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" tmhedberg/SimpylFold {{{2
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "enable previewing of your folded classes' and functions' docstrings in the fold text
 let g:SimpylFold_docstring_preview = 0
 "let g:SimpylFold_docstring_level = 0
+" }}}
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ctrlpvim/ctrlp.vim {{{2
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll|pyc|swp)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+" }}}
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""
+" majutsushi/tagbar
+nmap <F8> :TagbarToggle<CR>
+" end majutsushi/tagbar
+""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""
+"" scrooloose/syntastic
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+"
+"let g:syntastic_python_checkers = ['pylint']
+" end scrooloose/syntastic
+""""""""""""""""""""""""""""""""
+
+if has('nvim')
+	let g:deoplete#enable_at_startup = 1
+	let g:deoplete#auto_complete_start_length = 0
+	let g:deoplete#delimiters = ['/','.']
+	let g:deoplete#keyword_patterns = {}
+	let g:deoplete#keyword_patterns._ = '[a-zA-Z_]\k*\(?'
+
+	" The timeout (in seconds) for jedi server to workaround endless loop in jedi.
+	" Increase it if you cannot get completions for large package such as pandas (see #125). Default: 10
+	let g:deoplete#sources#jedi#server_timeout = 10
+	" Sets the maximum length of completion description text. 
+	" If this is exceeded, a simple description is used instead. Default: 50
+	let g:deoplete#sources#jedi#statement_length = 50
+	" Enables caching of completions for faster results. Default: 1
+	let g:deoplete#sources#jedi#enable_cache = 1
+	" Shows docstring in preview window. Default: 0
+	let g:deoplete#sources#jedi#show_docstring = 1
+	" Set the Python interpreter path to use for the completion server. 
+	" deoplete-jedi uses the first available python in $PATH. Use this only if you want use a specific Python interpreter. 
+	" This has no effect if $VIRTUAL_ENV is present in the environment. Note: This is completely unrelated to configuring Neovim.
+	"let g:deoplete#sources#jedi#python_path = 
+	" Enable logging from the server. If set to 1, server messages are emitted to Deoplete's log file.
+	" This can optionally be a string that points to a file for separate logging. The log level will be inherited from deoplete#enable_logging().
+	let g:deoplete#sources#jedi#debug_server = 0
+	" A list of extra paths to add to sys.path when performing completions.
+	"let g:deoplete#sources#jedi#extra_path = 
+else
+	""""""""""""""""""""""""""""""""
+	" Valloric/YouCompleteMe
+	"let g:ycm_autoclose_preview_window_after_completion=1
+	"let g:ycm_collect_identifiers_from_tags_files = 1
+	"let g:ycm_min_num_of_chars_for_completion = 0
+	map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+	"let g:ycm_python_binary_path = 'python'
+	" end Valloric/YouCompleteMe
+	""""""""""""""""""""""""""""""""
+	" ---------------------------------- "
+	"  " Configure YouCompleteMe
+	" ---------------------------------- "
+
+	let g:ycm_python_binary_path = 'python'
+	let g:ycm_autoclose_preview_window_after_completion=1
+	let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
+	let g:ycm_use_ultisnips_completer = 1 " Default 1, just ensure
+	let g:ycm_seed_identifiers_with_syntax = 1 " Completion for programming language's keyword
+	let g:ycm_complete_in_comments = 1 " Completion in comments
+	"let g:ycm_complete_in_strings = 1 " Completion in string
+	let g:ycm_min_num_of_chars_for_completion = 1
+
+	let g:ycm_seed_identifiers_with_syntax=1
+	let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+	let g:ycm_confirm_extra_conf=0
+	let g:ycm_collect_identifiers_from_tag_files = 1
+	set completeopt=longest,menu
+
+	"let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
+	"let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
+
+	"map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+	" Goto definition with F3
+	"map <F3> :YcmCompleter GoTo<CR>
+
+	" make YCM compatible with UltiSnips (using supertab)
+	" let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+	" let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+	" let g:SuperTabDefaultCompletionType = '<C-n>'
+endif
+ 
+" better key bindings for UltiSnipsExpandTrigger
+" let g:UltiSnipsExpandTrigger="<cr>"
+" let g:UltiSnipsJumpForwardTrigger="<c-j>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+""""""""""""""""""""""""""""""""
+" vim-airline/vim-airline
+" Automatically displays all buffers when there's only one tab open.
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_detect_modified=1
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+" let g:airline_symbols.branch = ''
+" let g:airline_symbols.readonly = ''
+" let g:airline_symbols.linenr = ''
+" end vim-airline/vim-airline
+""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""
+" scrooloose/nerdcommenter
+let g:NERDSpaceDelims = 1
+" end scrooloose/nerdcommenter
+""""""""""""""""""""""""""""""""
+let g:gutentags_cache_dir = '~/.vim/gutentags'
+""""""""""""""""""""""""""""""""
+
+"}}}
+
+" Settings {{{
 
 set foldlevelstart=1
+
 " To enable 256 colors in vim, put this your .vimrc before setting the
 " colorscheme. see: http://vim.wikia.com/wiki/256_colors_in_vim
 set t_Co=256
 
 " Enable syntax highlighting
 syntax on
-
-" let mapleader=' '
-let mapleader=','
-
-inoremap jk <Esc>
-inoremap kj <Esc>
-" vnoremap jk <Esc>
-" vnoremap kj <Esc>
-onoremap jk <Esc>
-onoremap kj <Esc>
+color dracula
 
 set nowrap
 
@@ -130,7 +269,8 @@ set mouse=a
 " When a bracket is inserted, briefly jump to the matching one.
 set showmatch
 
-set clipboard^=unnamed,unnamedplus
+" set clipboard^=unnamed,unnamedplus
+set clipboard=unnamedplus,unnamed
 
 set splitbelow
 set splitright
@@ -144,10 +284,13 @@ set notimeout ttimeout ttimeoutlen=200
  
 " Use <F2> to toggle between 'paste' and 'nopaste'
 set pastetoggle=<F2>
- 
+" }}}
+
+" Filetype Specific {{{
 """"""""""""""""""""""""""""""""
 " Python specific
 autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=4 textwidth=300 autoindent fileformat=unix
+autocmd FileType c,cpp setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=4 textwidth=300 autoindent fileformat=unix
 "au BufNewFile,BufRead *.py
     "\ set tabstop=4 |		" Number of spaces that a <Tab> in the file counts for.
     "\ set softtabstop=4 |
@@ -165,16 +308,28 @@ autocmd FileType python nnoremap <buffer> <F9> :exec '!python' shellescape(@%, 1
 au! BufRead,BufNewFile *.markdown set filetype=mkd
 au! BufRead,BufNewFile *.md       set filetype=mkd
 """"""""""""""""""""""""""""""""
+" }}}
 
-"------------------------------------------------------------
 " Mappings {{{1
-"
-" Useful mappings
- 
+
+map <space> <leader>
+" let mapleader=' '
+" let mapleader=','
+
+inoremap jk <Esc>
+inoremap kj <Esc>
+" vnoremap jk <Esc>
+" vnoremap kj <Esc>
+onoremap jk <Esc>
+onoremap kj <Esc>
+
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
 " which is the default
 map Y y$
  
+" highlight last inserted text
+nnoremap gV `[v`]
+
 " Map <C-L> (redraw screen) to also turn off search highlighting until the
 " next search
 "nnoremap <C-L> :nohl<CR><C-L>
@@ -200,92 +355,6 @@ nnoremap <C-H> <C-W><C-H>
 :nnoremap g* g*zz
 :nnoremap g# g#zz
 
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|dll|pyc|swp)$',
-  \ 'link': 'some_bad_symbolic_links',
-  \ }
-
-""""""""""""""""""""""""""""""""
-" majutsushi/tagbar
-nmap <F8> :TagbarToggle<CR>
-" end majutsushi/tagbar
-""""""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""""
-" scrooloose/syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-let g:syntastic_python_checkers = ['pylint']
-" end scrooloose/syntastic
-""""""""""""""""""""""""""""""""
-
-""""""""""""""""""""""""""""""""
-" Valloric/YouCompleteMe
-"let g:ycm_autoclose_preview_window_after_completion=1
-"let g:ycm_collect_identifiers_from_tags_files = 1
-"let g:ycm_min_num_of_chars_for_completion = 0
-"map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-"let g:ycm_python_binary_path = 'python'
-" end Valloric/YouCompleteMe
-""""""""""""""""""""""""""""""""
-" ---------------------------------- "
-"  " Configure YouCompleteMe
-" ---------------------------------- "
-
-let g:ycm_python_binary_path = 'python'
-let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
-let g:ycm_use_ultisnips_completer = 1 " Default 1, just ensure
-let g:ycm_seed_identifiers_with_syntax = 1 " Completion for programming language's keyword
-let g:ycm_complete_in_comments = 1 " Completion in comments
-"let g:ycm_complete_in_strings = 1 " Completion in string
-let g:ycm_min_num_of_chars_for_completion = 1
-
-let g:ycm_seed_identifiers_with_syntax=1
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-let g:ycm_confirm_extra_conf=0
-let g:ycm_collect_identifiers_from_tag_files = 1
-set completeopt=longest,menu
-
-"let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
-"let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
-
-"map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-
-" Goto definition with F3
-"map <F3> :YcmCompleter GoTo<CR>
-
-" make YCM compatible with UltiSnips (using supertab)
-" let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-" let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-" let g:SuperTabDefaultCompletionType = '<C-n>'
- 
-" better key bindings for UltiSnipsExpandTrigger
-" let g:UltiSnipsExpandTrigger="<cr>"
-" let g:UltiSnipsJumpForwardTrigger="<c-j>"
-" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-""""""""""""""""""""""""""""""""
-" vim-airline/vim-airline
-" Automatically displays all buffers when there's only one tab open.
-let g:airline#extensions#tabline#enabled = 1
-" end vim-airline/vim-airline
-""""""""""""""""""""""""""""""""
-
-""""""""""""""""""""""""""""""""
-" scrooloose/nerdcommenter
-let g:NERDSpaceDelims = 1
-" end scrooloose/nerdcommenter
-""""""""""""""""""""""""""""""""
-let g:gutentags_cache_dir = '~/.vim/gutentags'
-""""""""""""""""""""""""""""""""
 " Buffer stuff
 ":nnoremap <Tab> :bnext<CR>
 ":nnoremap <S-Tab> :bprevious<CR>
@@ -317,4 +386,8 @@ nnoremap <Leader>0 :10b<CR>
 
 ":autocmd InsertEnter * set cul
 ":autocmd InsertLeave * set nocul
+" }}}
 
+" Allow .vimrc to have sections.
+set modelines=1
+" vim:foldmethod=marker:foldlevel=0

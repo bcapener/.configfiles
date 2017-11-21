@@ -6,21 +6,12 @@
 [[ $- != *i* ]] && return
 if [[ $TERM == xterm ]]; then TERM=xterm-256color; fi
 
-alias ls='ls --color=auto'
-alias ll='ls -alh'
-PS1='[\u@\h \W]\$ '
-
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
-
+PACKAGE_MANAGER='yaourt'
 #alias pacup='sudo pacman -Syyu'
-alias pacup='echo packer -Syu; packer -Syu'
+alias pacup='echo $PACKAGE_MANAGER -Syu --noconfirm --noedit; $PACKAGE_MANAGER -Syu --noconfirm --noedit'
+alias paccheck='echo $PACKAGE_MANAGER -Syu --noconfirm --noedit; $PACKAGE_MANAGER -Syu --noconfirm --noedit'
 alias pacs='echo packer -S; packer -S'
 alias pacss='echo packer -Ss; packer -Ss'
 alias pacqs='echo packer -Qs; packer -Qs'
 alias pacupp='echo packer -Syyu; packer -Syyu'
 
-alias bashrc='vim ~/.bashrc;. ~/.bashrc;echo ~/.bashrc re-loaded;'
-alias vimrc='vim ~/.vimrc'
-eval $(thefuck --alias)
-alias crap='fuck'

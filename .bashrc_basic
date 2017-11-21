@@ -1,0 +1,50 @@
+#
+# ~/.bashrc
+#
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+if [[ $TERM == xterm ]]; then TERM=xterm-256color; fi
+
+# - Regular - #
+txtblk='\[\e[0;30m\]' # Black
+txtred='\[\e[0;31m\]' # Red
+#txtgrn='\[\e[0;32m\]' # Green
+#txtylw='\[\e[0;33m\]' # Yellow
+#txtblu='\[\e[0;34m\]' # Blue
+txtpur='\[\e[0;35m\]' # Purple
+txtcyn='\[\e[0;36m\]' # Cyan
+#txtwht='\[\e[0;37m\]' # White
+txtgry='\[\e[38;5;244m\]' # Gray
+txtblu='\[\e[38;5;27m\]' # blue
+txtylw='\[\e[38;5;11m\]' # yellow
+txtgrn='\[\e[38;5;2m\]'  # green
+txtwht='\[\e[38;5;15m\]' # white
+# - Bold - #
+bldblk='\[\e[1;30m\]' # Black
+bldred='\[\e[1;31m\]' # Red
+bldgrn='\[\e[1;32m\]' # Green
+bldylw='\[\e[1;33m\]' # Yellow
+bldblu='\[\e[1;34m\]' # Blue
+bldpur='\[\e[1;35m\]' # Purple
+bldcyn='\[\e[1;36m\]' # Cyan
+bldwht='\[\e[1;37m\]' # White
+# - End Coloring - #
+END="\[\e[0m\]"
+tput_sgr0='\[$(tput sgr0)\]'
+tput_bold='\[$(tput bold)\]'
+
+# \A : the current time in 24-hour HH:MM format
+# \W : the basename of the current working directory
+# \u : the username of the current user
+# \n : newline
+export PS1="$txtgry[\t] $txtblu\u$txtgry@$txtblu\h $txtgry[$txtylw\w$txtgry]\n$tput_bold$txtgrn:>$tput_sgr0 "
+alias ls='ls --color=auto'
+alias ll='ls -alh'
+# PS1='[\u@\h \W]\$ '
+
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+
+alias bashrc='vim ~/.bashrc;source ~/.bashrc;echo ~/.bashrc re-loaded;'
+alias vimrc='vim ~/.vimrc'
