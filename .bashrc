@@ -4,8 +4,17 @@
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
-#source /usr/share/git-core/contrib/completion/git-prompt.sh
 
+# override vim
+if [ -e /usr/local/bin/nvim ]; then 
+	alias vim='/usr/local/bin/nvim'; 
+elif [ -e /usr/bin/nvim ]; then 
+	alias vim='/usr/bin/nvim'; 
+elif [ -e /usr/bin/vimx ]; then 
+	alias vim='/usr/bin/vimx';
+fi
+
+#source /usr/share/git-core/contrib/completion/git-prompt.sh
 set -o vi
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
@@ -28,8 +37,9 @@ else
 fi
 
 pyufs=$HOME/projects/pyufs
-pyPath="/usr/lib64/python2.7/site-packages/:/usr/lib64/python2.7/site-packages/gtk-2.0/"
-export PYTHONPATH="${PYTHONPATH}:${pyPath}:$workspace/:$workspace/MIST/:$pyufs/:$pyufs/ufs/"
+pyPath="" #"/usr/lib64/python2.7/site-packages/:/usr/lib64/python2.7/site-packages/gtk-2.0/"
+#export PYTHONPATH="${PYTHONPATH}:${pyPath}:$workspace/:$workspace/MIST/:$pyufs/:$pyufs/ufs/"
+export PYTHONPATH="${pyPath}:$workspace/:$workspace/MIST/:$pyufs/:$pyufs/ufs/"
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
@@ -38,9 +48,9 @@ export PYTHONPATH="${PYTHONPATH}:${pyPath}:$workspace/:$workspace/MIST/:$pyufs/:
 alias sudo='sudo '
 
 export http_proxy=http://proxy.micron.com:8080/
-export https_proxY=$http_proxy
+export https_proxy=$http_proxy
 export ftp_proxy=$http_proxy
-export rsync_proxY=$http_proxy
+export rsync_proxy=$http_proxy
 # export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
 # Add below to sudo config (via visudo) to keep proxy settings through sudo. 
 # "Defaults env_keep += "http_proxy https_proxy ftp_proxy""
