@@ -162,7 +162,14 @@ local on_attach = function(client, bufnr)
   mapb(bufnr, "n", "gk", "<cmd>Lspsaga diagnostic_jump_prev<cr>", {silent = true, noremap = true})
   mapb(bufnr, "n", "<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1, '<c-u>')<cr>", {})
   mapb(bufnr, "n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1, '<c-d>')<cr>", {})
+
 end
+
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', 'ff', builtin.find_files, {silent = true, noremap = true})
+vim.keymap.set('n', 'fg', builtin.live_grep, {silent = true, noremap = true})
+vim.keymap.set('n', 'fb', builtin.buffers, {silent = true, noremap = true})
+vim.keymap.set('n', 'fh', builtin.help_tags, {silent = true, noremap = true})
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
