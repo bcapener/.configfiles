@@ -14,6 +14,7 @@ require('bufferline').setup {
     indicator = {icon = '▎'},
     --buffer_close_icon = '揻',
     modified_icon = '●',
+    buffer_close_icon = '',
     close_icon = '',
     left_trunc_marker = '',
     right_trunc_marker = '',
