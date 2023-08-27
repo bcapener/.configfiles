@@ -36,7 +36,7 @@ return require('packer').startup(function(use)
       'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
   }
-
+  -- https://github.com/Mofiqul/vscode.nvim
   use 'christianchiarulli/nvcode-color-schemes.vim'
   use "lunarvim/darkplus.nvim"
   use 'kyazdani42/nvim-web-devicons'
